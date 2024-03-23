@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/composeroot_nav_graph"
+    app:startDestination="@id/composeRootFragment">
+
+    <fragment
+        android:id="@+id/composeRootFragment"
+        android:tag="composeRootFragment"
+        android:name="com.example.composeroot.ComposeRootFragment"
+        android:label="composeroot_fragment">
+        <deepLink app:uri="android-app://example.myapp.app/composeroot_fragment" />
+    </fragment>
+
+</navigation>
