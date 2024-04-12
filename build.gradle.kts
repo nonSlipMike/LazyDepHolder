@@ -8,6 +8,7 @@ plugins{
 
 task<Delete>("clean") {
     delete(rootProject.buildDir)
+
 }
 
 gradle.taskGraph.whenReady(closureOf<TaskExecutionGraph> {
