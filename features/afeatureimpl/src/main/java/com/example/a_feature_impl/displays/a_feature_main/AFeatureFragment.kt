@@ -1,9 +1,6 @@
 package com.example.a_feature_impl.displays.a_feature_main
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,208 +30,194 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.fragment.app.Fragment
-import com.example.a_feature_impl.di.AFeatureComponent
 import com.example.a_feature_impl.reststubs.UsersOnWorkDto
-import com.example.common.compose.Router
-import com.example.common.compose.setContent
-import com.example.common.viewmodel.lazyViewModel
+import com.example.c_feature_api.dto.C_FEATURE_PATCH
 
-class AFeatureFragment : Fragment() {
+@Composable
+fun AFeatureMainComposeScreen(
+	arguments: String?,
+	routeHandler: (String) -> Unit,
+	viewModel: AFeatureViewModel
+) {
 
-	private val viewModel: AFeatureViewModel by lazyViewModel { stateHandle ->
-		AFeatureComponent.getInstance().provideViewModel().create(stateHandle)
-	}
-
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	) = setContent {
-		Log.d("assadsa", "Recomposition from .setContent()")
-		val state by viewModel.state.collectAsState()
-		//Render screen content
-		when {
-			state.isLoading -> ContentWithProgress()
-			state.data.users.isNotEmpty() -> MainScreenContent(
-				state.menuText,
-				state.data,
-				state.dialogMsg,
-				state.isShowAddDialog,
-				onShowDialogClick = { viewModel.onShowDialogClicked(true) },
-				onCloseDialogClick = { viewModel.onShowDialogClicked(false) },
-				onAcceptDialogClick = { text -> viewModel.onAcceptDialogClicked(text) },
-				onUserCheckedChanged = { index, isChecked ->
-					viewModel.onItemCheckedChanged(
-						index,
-						isChecked
-					)
-				}
-			)
-		}
-	}
-
-
-	@Composable
-	private fun ContentWithProgress() {
-		Surface(color = Color.LightGray) {
-			Box(
-				modifier = Modifier.fillMaxSize(),
-				contentAlignment = Alignment.Center
-			) {
-				CircularProgressIndicator()
-			}
-		}
-	}
-
-	@Composable
-	private fun MainScreenContent(
-		manuText: String,
-		data: UsersOnWorkDto,
-		msgDialog: String,
-		isShowAddDialog: Boolean,
-		onUserCheckedChanged: (Int, String) -> Unit,
-		onShowDialogClick: () -> Unit,
-		onCloseDialogClick: () -> Unit,
-		onAcceptDialogClick: (String) -> Unit
-	) {
-		Log.d("assadsa", "Recomposition from MainScreenContent()")
-
-		if (isShowAddDialog) {
-			MenuTextDialog(
-				msgDialog,
-				{ onCloseDialogClick.invoke() },
-				{ onAcceptDialogClick.invoke(it) })
-		}
-		ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-			val (MenuTextConst, UserListConst, ButtonConst) = createRefs()
-
-			Text(
-				text = manuText,
-				modifier = Modifier
-					.constrainAs(MenuTextConst) {
-						top.linkTo(parent.top)
-					}
-					.clickable {
-						onShowDialogClick.invoke()
-					})
-			LazyColumn(
-				modifier = Modifier
-					.constrainAs(UserListConst) {
-						top.linkTo(MenuTextConst.bottom)
-						bottom.linkTo(ButtonConst.top)
-					}
-					.padding(vertical = 40.dp)
-			) {
-				itemsIndexed(data.users) { index, item ->
-					UserItemCard(item, onUserCheckedChanged, index)
-				}
-			}
-
-			Button(
-				modifier = Modifier
-					.constrainAs(ButtonConst) {
-						bottom.linkTo(parent.bottom)
-					},
-				onClick = { (context as Router).roteToFragment("feature/ComposeRootFragment") },
-				colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
-			) {
-				Text(
-					text = "go to some display",
-					style = TextStyle(color = Color.White, fontSize = 12.sp)
+	Log.d("assadsa", "Recomposition from .setContent()")
+	val state by viewModel.state.collectAsState()
+	//Render screen content
+	when {
+		state.isLoading -> ContentWithProgress()
+		state.data.users.isNotEmpty() -> MainScreenContent(
+			routeHandler,
+			state.menuText,
+			state.data,
+			state.dialogMsg,
+			state.isShowAddDialog,
+			onShowDialogClick = { viewModel.onShowDialogClicked(true) },
+			onCloseDialogClick = { viewModel.onShowDialogClicked(false) },
+			onAcceptDialogClick = { text -> viewModel.onAcceptDialogClicked(text) },
+			onUserCheckedChanged = { index, isChecked ->
+				viewModel.onItemCheckedChanged(
+					index,
+					isChecked
 				)
-			}
-		}
-	}
-
-	@Composable
-	private fun UserItemCard(
-		item: UsersOnWorkDto.User,
-		onItemCheckedChanged: (Int, String) -> Unit,
-		index: Int,
-	) {
-		Log.d("assadsa", "Recomposition from UserItemCard ${index}")
-
-		Column(
-			modifier = Modifier
-				.padding(16.dp)
-				.clickable {
-					onItemCheckedChanged(index, "$ ты тыкнул на чела с индексом {item.id} ")
-				}
-		) {
-			Text(
-				text = item.id,
-				modifier = Modifier.padding(start = 16.dp),
-				style = TextStyle(
-					color = Color.Black,
-					fontSize = 14.sp
-				)
-			)
-			Text(
-				text = item.currentJob.title,
-				modifier = Modifier.padding(start = 16.dp),
-				style = TextStyle(
-					color = Color.Black,
-					fontSize = 14.sp
-				)
-			)
-		}
-	}
-
-	@OptIn(ExperimentalMaterial3Api::class)
-	@Composable
-	private fun MenuTextDialog(
-		msgDialog: String,
-		onDialogDismissClick: () -> Unit,
-		onDialogOkClick: (String) -> Unit,
-	) {
-		Log.d("assadsa", "Recomposition from MenuTextDialog")
-
-		var text by remember { mutableStateOf("") }
-		AlertDialog(onDismissRequest = { },
-			text = {
-				if (msgDialog.isEmpty()) {
-					TextField(
-						value = text,
-						onValueChange = { newText ->
-							text = newText
-						},
-						colors = TextFieldDefaults.textFieldColors(
-							focusedIndicatorColor = Color.Blue,
-							disabledIndicatorColor = Color.Blue,
-							unfocusedIndicatorColor = Color.Blue,
-							//backgroundColor = Color.LightGray,
-						)
-					)
-				} else {
-					Text(
-						text = msgDialog
-					)
-				}
-			},
-			confirmButton = {
-				if (msgDialog.isEmpty()) {
-					Button(
-						onClick = { onDialogOkClick(text) },
-						colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
-					) {
-						Text(text = "Ok", style = TextStyle(color = Color.White, fontSize = 12.sp))
-					}
-				}
-			}, dismissButton = {
-				Button(
-					onClick = { onDialogDismissClick.invoke() },
-					colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
-				) {
-					Text(text = "Cancel", style = TextStyle(color = Color.White, fontSize = 12.sp))
-				}
 			}
 		)
 	}
+}
 
-
-	companion object {
-		fun getInstance() = AFeatureFragment()
+@Composable
+private fun ContentWithProgress() {
+	Surface(color = Color.LightGray) {
+		Box(
+			modifier = Modifier.fillMaxSize(),
+			contentAlignment = Alignment.Center
+		) {
+			CircularProgressIndicator()
+		}
 	}
+}
+
+@Composable
+private fun MainScreenContent(
+	routeHandler: (String) -> Unit,
+	manuText: String,
+	data: UsersOnWorkDto,
+	msgDialog: String,
+	isShowAddDialog: Boolean,
+	onUserCheckedChanged: (Int, String) -> Unit,
+	onShowDialogClick: () -> Unit,
+	onCloseDialogClick: () -> Unit,
+	onAcceptDialogClick: (String) -> Unit
+) {
+	Log.d("assadsa", "Recomposition from MainScreenContent()")
+
+	if (isShowAddDialog) {
+		MenuTextDialog(
+			msgDialog,
+			{ onCloseDialogClick.invoke() },
+			{ onAcceptDialogClick.invoke(it) })
+	}
+	ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+		val (MenuTextConst, UserListConst, ButtonConst) = createRefs()
+
+		Text(
+			text = manuText,
+			modifier = Modifier
+				.constrainAs(MenuTextConst) {
+					top.linkTo(parent.top)
+				}
+				.clickable {
+					onShowDialogClick.invoke()
+				})
+		LazyColumn(
+			modifier = Modifier
+				.constrainAs(UserListConst) {
+					top.linkTo(MenuTextConst.bottom)
+					bottom.linkTo(ButtonConst.top)
+				}
+				.padding(vertical = 40.dp)
+		) {
+			itemsIndexed(data.users) { index, item ->
+				UserItemCard(item, onUserCheckedChanged, index)
+			}
+		}
+
+		Button(
+			modifier = Modifier
+				.constrainAs(ButtonConst) {
+					bottom.linkTo(parent.bottom)
+				},
+			onClick = { routeHandler("$C_FEATURE_PATCH/assd") },
+			colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
+		) {
+			Text(
+				text = "go to some display",
+				style = TextStyle(color = Color.White, fontSize = 12.sp)
+			)
+		}
+	}
+}
+
+@Composable
+private fun UserItemCard(
+	item: UsersOnWorkDto.User,
+	onItemCheckedChanged: (Int, String) -> Unit,
+	index: Int,
+) {
+	Log.d("assadsa", "Recomposition from UserItemCard ${index}")
+
+	Column(
+		modifier = Modifier
+			.padding(16.dp)
+			.clickable {
+				onItemCheckedChanged(index, "ты тыкнул на чела с индексом ${item.id} ")
+			}
+	) {
+		Text(
+			text = item.id,
+			modifier = Modifier.padding(start = 16.dp),
+			style = TextStyle(
+				color = Color.Black,
+				fontSize = 14.sp
+			)
+		)
+		Text(
+			text = item.currentJob.title,
+			modifier = Modifier.padding(start = 16.dp),
+			style = TextStyle(
+				color = Color.Black,
+				fontSize = 14.sp
+			)
+		)
+	}
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MenuTextDialog(
+	msgDialog: String,
+	onDialogDismissClick: () -> Unit,
+	onDialogOkClick: (String) -> Unit,
+) {
+	Log.d("assadsa", "Recomposition from MenuTextDialog")
+
+	var text by remember { mutableStateOf("") }
+	AlertDialog(onDismissRequest = { },
+		text = {
+			if (msgDialog.isEmpty()) {
+				TextField(
+					value = text,
+					onValueChange = { newText ->
+						text = newText
+					},
+					colors = TextFieldDefaults.textFieldColors(
+						focusedIndicatorColor = Color.Blue,
+						disabledIndicatorColor = Color.Blue,
+						unfocusedIndicatorColor = Color.Blue,
+						//backgroundColor = Color.LightGray,
+					)
+				)
+			} else {
+				Text(
+					text = msgDialog
+				)
+			}
+		},
+		confirmButton = {
+			if (msgDialog.isEmpty()) {
+				Button(
+					onClick = { onDialogOkClick(text) },
+					colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
+				) {
+					Text(text = "Ok", style = TextStyle(color = Color.White, fontSize = 12.sp))
+				}
+			}
+		}, dismissButton = {
+			Button(
+				onClick = { onDialogDismissClick.invoke() },
+				colors = ButtonDefaults.buttonColors(contentColor = Color.Blue)
+			) {
+				Text(text = "Cancel", style = TextStyle(color = Color.White, fontSize = 12.sp))
+			}
+		}
+	)
 }

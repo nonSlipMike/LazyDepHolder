@@ -1,7 +1,7 @@
 plugins {
 	id("com.android.library")
 	kotlin("android")
-	kotlin("kapt")
+	id ("com.google.devtools.ksp")
 }
 android {
 	compileSdk = compileSdkVersionConf
@@ -11,7 +11,6 @@ android {
 
 initLibDependencies()
 dependencies {
-	//implementation(project(":core:modulinjection"))
 	implementation(project(":common"))
 	implementation(project(":features:cfeatureapi"))
 }

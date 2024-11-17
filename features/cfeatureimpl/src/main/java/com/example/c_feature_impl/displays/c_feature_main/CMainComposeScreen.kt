@@ -21,16 +21,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavOptionsBuilder
-import okhttp3.OkHttp
-import okhttp3.OkHttpClient
 
 @Composable
 fun CFeatureMainComposeScreen(
-	routeHandler: (String, NavOptionsBuilder.() -> Unit) -> Unit,
+	arguments: String?,
+	routeHandler: (String) -> Unit,
 	viewModel: CFeatureViewModel
 ) {
-	OkHttpClient
 	Log.d("assadsa", "Recomposition from CFeatureMainComposeScreen ")
 
 	val state = viewModel.uiState.collectAsState()
@@ -54,7 +51,7 @@ fun CFeatureMainComposeScreen(
 		}
 		Text(
 			text = "go to orders screen",
-			modifier = Modifier.clickable { routeHandler("orders") {} })
+			modifier = Modifier.clickable { routeHandler("orders") })
 
 		ListOfDigits(state.value.items)
 
@@ -62,7 +59,6 @@ fun CFeatureMainComposeScreen(
 	}
 
 }
-
 
 
 @Composable//объекты коллекций передавать только в Immutable обертках!!!!!

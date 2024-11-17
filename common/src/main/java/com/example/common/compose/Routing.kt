@@ -1,7 +1,5 @@
 package com.example.common.compose
 
-import android.os.Bundle
-import androidx.annotation.IdRes
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.EnterTransition
@@ -13,19 +11,16 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptionsBuilder
 import com.google.accompanist.navigation.animation.composable
 
 interface Router {
-	fun routeToCompose(screen: String)
-
-	fun roteToFragment(path: String, arguments: Bundle? = null)
+	fun routeTo(screen: String)
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.registerInNavHost(
 	roteData: ComposablePatchData,
-	router: (String, NavOptionsBuilder.() -> Unit) -> Unit
+	router: (String) -> Unit
 ) {
 	composable(
 		roteData.route,
@@ -45,7 +40,7 @@ data class ComposablePatchData(
 	val deepLinks: List<NavDeepLink> = emptyList(),
 	val transitions: Transitions = Transitions(),
 	//составная лямбда для того чтобы инкапсулировать роутер в момент инициализации путей
-	val content: ((String, NavOptionsBuilder.() -> Unit) -> Unit) -> @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+	val content: ((String) -> Unit) -> @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
 
 ) {
 	data class Transitions(

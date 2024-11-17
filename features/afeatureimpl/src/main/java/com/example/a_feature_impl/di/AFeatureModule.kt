@@ -1,13 +1,18 @@
 package com.example.a_feature_impl.di
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.example.a_feature_impl.displays.a_feature_main.AFeatureFragment
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.a_feature_api.network.A_FEATURE_PATCH_MASK
+import com.example.a_feature_impl.displays.a_feature_main.AFeatureMainComposeScreen
 import com.example.a_feature_impl.displays.a_feature_main.AFeatureRepository
 import com.example.a_feature_impl.displays.a_feature_main.AFeatureRepositoryImpl
+import com.example.a_feature_impl.displays.a_feature_main.AFeatureViewModel
 import com.example.a_feature_impl.network.AFeatureInteractor
 import com.example.a_feature_impl.network.AFeatureInteractorImpl
 import com.example.a_feature_impl.network.AFeatureRest
+import com.example.common.ARGS_NAME
+import com.example.common.compose.ComposablePatchData
+import com.example.common.compose.provideViewModelWithDependency
 import com.example.network_api.RetrofitProvider
 import dagger.Binds
 import dagger.Module
@@ -27,10 +32,27 @@ object AFeatureModule {
 
 	@Provides
 	@IntoMap
-	@StringKey("feature/AFeatureFragment")
-	fun provideAFeatureFragment(): (Bundle?) -> Fragment =
-		{ it -> AFeatureFragment.getInstance().apply { arguments = it } }
+	@StringKey(A_FEATURE_PATCH_MASK)
+	fun getNavHostConfig1(): ComposablePatchData {
+		return ComposablePatchData(
+			A_FEATURE_PATCH_MASK,
+			transitions = ComposablePatchData.Transitions.DownTransitions,
+			arguments = listOf(navArgument(ARGS_NAME) { type = NavType.StringType }),
+			content = { routeHandler ->
+				{
+					AFeatureMainComposeScreen(it.arguments?.getString(ARGS_NAME),
+						routeHandler,
+						provideViewModelWithDependency {
+							AFeatureComponent.getInstance().getViewModel()
+						})
+				}
+			}
+		)
+	}
 
+	@Provides
+	fun provideViewModel(repository: AFeatureRepository): AFeatureViewModel =
+		AFeatureViewModel(repository)
 
 	@Module
 	internal abstract class Declarations {

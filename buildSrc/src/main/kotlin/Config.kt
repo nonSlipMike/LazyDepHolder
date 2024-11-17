@@ -42,7 +42,7 @@ const val composeNavAnimationVer = "0.31.2-alpha"
 
 
 //androidMaterialw
-const val materialVer = "1.3.0"
+const val materialVer = "1.4.0"
 const val constraintLayoutVer = "2.0.4"
 const val materialDateTimePickerVer = "4.2.1"
 
@@ -50,10 +50,11 @@ const val materialDateTimePickerVer = "4.2.1"
 val navigationVer = "2.5.3"
 
 //kotlin
-const val kotlinVer = "1.8.21"
+const val kotlinVer = "1.9.10"
 const val ktxVer = "1.3.2"
+const val kspVer = "1.9.0-1.0.12"
 const val coroutinesVer = "1.4.2"
-const val kotlinCompilerExtensionVer = "1.4.7"
+const val kotlinCompilerExtensionVer = "1.5.3"
 
 //tests
 const val junitVer = "4.12"
@@ -62,7 +63,7 @@ const val espressoVer = "3.3.0"
 const val kaspressoVer = "1.2.0"
 
 //dagger
-const val daggerVer = "2.46"
+const val daggerVer = "2.48"
 const val jsr250Ver = "1.0"
 
 //JavaRx
@@ -182,21 +183,21 @@ val testLibs = mutableMapOf<String, Pair<Any, String>>().apply {
 		"espresso",
 		Pair("androidx.test.espresso:espresso-core:$espressoVer", "androidTestImplementation")
 	)
-	put(
-		"kaspresso",
-		Pair("com.kaspersky.android-components:kaspresso:$kaspressoVer", "testImplementation")
-	)
+//	put(
+//		"kaspresso",
+//		Pair("com.kaspersky.android-components:kaspresso:$kaspressoVer", "testImplementation")
+//	)
 }
 
 val diLibs = mutableMapOf<String, Pair<Any, String>>().apply {
 	put("jsr250", Pair("javax.annotation:jsr250-api:$jsr250Ver", "compileOnly"))
 	put("dagger", Pair("com.google.dagger:dagger:$daggerVer", "implementation"))
-	put("daggerCompiler", Pair("com.google.dagger:dagger-compiler:$daggerVer", "kapt"))
+	put("daggerCompiler", Pair("com.google.dagger:dagger-compiler:$daggerVer", "ksp"))
 	put("daggerAndroid", Pair("com.google.dagger:dagger-android:$daggerVer", "implementation"))
-	put(
-		"daggerProcessorAndroid",
-		Pair("com.google.dagger:dagger-android-processor:$daggerVer", "kapt")
-	)
+//	put(
+//		"daggerProcessorAndroid",
+//		Pair("com.google.dagger:dagger-android-processor:$daggerVer", "ksp")
+//	)
 }
 
 val navigationLibs = mutableMapOf<String, Pair<Any, String>>().apply {

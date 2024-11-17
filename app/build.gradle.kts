@@ -1,7 +1,7 @@
 plugins {
 	id("com.android.application")
 	id("org.jetbrains.kotlin.android")
-	id("org.jetbrains.kotlin.kapt")
+	id ("com.google.devtools.ksp")
 	id("androidx.navigation.safeargs.kotlin")
 	id("upload-plugin")
 }
@@ -12,9 +12,6 @@ android {
 	}//need to use viewModel
 	namespace = "com.example.myapp"
 	compileSdk = compileSdkVersionConf
-	buildFeatures {
-		viewBinding = true
-	}
 
 	buildFeatures.compose = true
 	composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
@@ -28,6 +25,20 @@ android {
 		testInstrumentationRunner = testInstrumentRunnerConf
 	}
 
+	buildTypes {
+		release {
+			isMinifyEnabled = true
+			isShrinkResources = true
+			proguardFiles(
+				getDefaultProguardFile("proguard-android-optimize.txt"),
+				"proguard-rules.pro"
+			)
+		}
+		debug {
+			isMinifyEnabled = false
+			isShrinkResources = false
+		}
+	}
 	flavorDimensions.add("main")
 	productFlavors {
 		create("prod") {
@@ -59,6 +70,9 @@ android {
 		jvmTarget = "1.8"
 	}
 }
+
+extra["androidSdkDirectory"] = android.sdkDirectory.absolutePath
+extra["compileSdkVersion"] = compileSdkVersionConf.toString()
 initLibDependencies()
 dependencies {
 
@@ -67,18 +81,13 @@ dependencies {
 	implementation(project(":common"))
 	implementation(project(":core:networkimpl"))
 	implementation(project(":core:networkapi"))
-	implementation(project(":core:composeroot"))
 	implementation(project(":features:afeatureimpl"))
 	implementation(project(":features:bfeatureimpl"))
 	implementation(project(":features:cfeatureimpl"))
 	implementation(project(":features:afeatureapi"))
+	implementation(project(":features:bfeatureapi"))
 	implementation(project(":features:cfeatureapi"))
-	implementation("com.google.android.material:material:1.4.0")
-	implementation("androidx.appcompat:appcompat:1.6.1")
-	implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-	implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-	implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-
-
 	//feature
 }
+
+apply(from = "unusedClasses.gradle.kts")

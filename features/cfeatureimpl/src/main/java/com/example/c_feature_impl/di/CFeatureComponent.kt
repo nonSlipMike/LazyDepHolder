@@ -9,8 +9,7 @@ import dagger.Component
 @Component(modules = [CFeatureModule::class])
 @FeatureModuleScope
 interface CFeatureComponent {
-	//@Named("ComposeRoots")
-	fun fileExporters1(): Map<String, ComposablePatchData>
+	fun fileExporters(): Map<String, ComposablePatchData>
 	fun getViewModel(): CFeatureViewModel
 
 

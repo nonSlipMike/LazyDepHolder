@@ -1,15 +1,20 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
+	id("com.android.library")
+	kotlin("android")
+	id("com.google.devtools.ksp")
 }
-android { compileSdk = compileSdkVersionConf }
+android {
+	compileSdk = compileSdkVersionConf
+	buildFeatures.compose = true
+	composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
+}
 
 initLibDependencies()
 dependencies {
-    //implementation(project(":core:modulinjection"))
-    implementation(project(":common"))
-    implementation(project(":features:bfeatureapi"))
+	implementation(project(":common"))
+	implementation(project(":features:bfeatureapi"))
+	implementation(project(":features:afeatureapi"))
+	implementation(project(":features:cfeatureapi"))
 
 }
 

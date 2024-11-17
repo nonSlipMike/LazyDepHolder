@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
+    id ("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     id ("kotlin-parcelize")
 }
@@ -16,5 +16,5 @@ dependencies {
     implementation(project(":features:afeatureapi"))
     implementation(project(":common"))
     implementation(project(":core:networkapi"))
-    implementation(project(":features:cfeatureimpl"))
+    implementation(project(":features:cfeatureapi"))
 }

@@ -8,48 +8,70 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
-import androidx.navigation.NavDeepLinkRequest
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
+import com.example.a_feature_api.network.A_FEATURE_PATCH_MASK
+import com.example.b_feature_api.dto.B_FEATURE_PATCH_MASK
+import com.example.c_feature_api.dto.C_FEATURE_PATCH
+import com.example.common.ARGS_NAME
+import com.example.common.compose.ComposablePatchData
 import com.example.common.compose.Router
+import com.example.common.compose.registerInNavHost
 
 import com.example.common.config.APP_CHANNEL_NOTIFY
 import com.example.myapp.di.MainActivityComponent
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), Router {
-
-	private lateinit var activityNavController: NavController
-
+class MainActivity : ComponentActivity(), Router {
 	@Inject
-	lateinit var routesByFragments: Map<String, ((Bundle?) -> Fragment)?>
+	lateinit var routerMap: Map<String, ComposablePatchData>
 
+	private lateinit var navController: NavHostController
 
+	@OptIn(ExperimentalAnimationApi::class)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		MainActivityComponent.getInstance().inject(this)
-
-
-
+		setContent {
+			MaterialTheme {
+				Column(modifier = Modifier.fillMaxSize()) {
+					navController = rememberAnimatedNavController()
+					AnimatedNavHost(
+						navController = navController,
+						startDestination = A_FEATURE_PATCH_MASK,
+						modifier = Modifier.weight(1f)
+					) {
+						// инжект модулей с помошью Dagger @InToMap из Feature модуля
+						routerMap.forEach {
+							registerInNavHost(it.value, ::routeTo)
+						}
+					}
+					intent.data?.encodedQuery?.let { routeTo(it) }//перехват pendingIntent
+					BottomMenu(::routeTo)
+				}
+			}
+		}
 	}
-
 
 	override fun onResume() {
 		super.onResume()
-		//supportFragmentManager.beginTransaction()
 
 		val intent = Intent(
 			Intent.ACTION_VIEW,
-			Uri.parse("https://vvx.com?параметр"),
+			Uri.parse("https://vvx.com?$A_FEATURE_PATCH_MASK"),
 			this,
 			MainActivity::class.java
 		)
@@ -94,22 +116,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Router {
 		}
 	}
 
-	override fun routeToCompose(screen: String) {
-		val request = NavDeepLinkRequest.Builder
-			.fromUri(screen.toUri())
-			.build()
-
-		activityNavController.navigate(request)
-
-
-	}
-
-	override fun roteToFragment(path: String, arguments: Bundle?) {
-		routesByFragments[path]?.invoke(arguments)?.let {
-			supportFragmentManager.apply {
-				popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-				beginTransaction()
-					.replace(R.id.nav_host_fragment, it).addToBackStack(null).commit()
+	override fun routeTo(screen: String) {
+		navController.navigate(screen) {
+			//builder()
+			popUpTo("${screen.substringBefore("/")}/{$ARGS_NAME}") {
+				inclusive = true
 			}
 		}
 	}

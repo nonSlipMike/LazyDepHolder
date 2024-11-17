@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M13,19L18,14H14V10H10V14H6L11,21Z"/>
+
+    <!-- Зеленая стрелка, перевернута на 180 градусов -->
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M10,21L16,15H13V11H11V15H8L11,20Z"/>
+</vector>

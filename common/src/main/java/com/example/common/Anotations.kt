@@ -1,9 +1,7 @@
 package com.example.common
 
-import java.lang.annotation.RetentionPolicy
 import javax.inject.Qualifier
 import javax.inject.Scope
-
 
 @Scope
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)

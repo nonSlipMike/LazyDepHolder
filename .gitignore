@@ -4,6 +4,7 @@
 *.aar
 *.ap_
 *.aab
+
 # Files for the ART/Dalvik VM
 *.dex
 # Java class files
@@ -76,4 +77,6 @@ lint/tmp/
 # App Specific cases 
 app/release/output.json
 .idea/codeStyles/
-/buildSrc/.gradle/
+/buildSrc/.gradle/*
+git rm -r --cached /buildSrc/.gradle
+

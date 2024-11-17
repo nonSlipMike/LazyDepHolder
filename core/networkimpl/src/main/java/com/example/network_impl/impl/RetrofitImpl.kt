@@ -1,6 +1,5 @@
 package com.example.network_impl.impl
 
-import android.app.Application
 import android.content.Context
 import com.example.network_api.RetrofitProvider
 import com.example.network_impl.BuildConfig

@@ -1,34 +1,23 @@
 package com.example.a_feature_impl.displays.a_feature_main
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.a_feature_impl.displays.a_feature_main.mvi.AFeatureEvent
 import com.example.a_feature_impl.displays.a_feature_main.mvi.AFeatureState
 import com.example.common.mvi.BaseViewModel
 import com.example.common.mvi.StateMachine
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.lang.Math.sqrt
-import kotlin.math.log
 
-class AFeatureViewModel @AssistedInject constructor(
+class AFeatureViewModel constructor(
 	repository: AFeatureRepository,
-	@Assisted savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<AFeatureState, AFeatureEvent>() {
 
 	private val stateMachine = MainReducer(AFeatureState.initial())
 
 	override val state: StateFlow<AFeatureState>
 		get() = stateMachine.state
-
-
-
-	sealed class asd
-
 
 	init {
 		solveTask(1.0, 1.0, 1.0)
@@ -130,10 +119,5 @@ class AFeatureViewModel @AssistedInject constructor(
 				}
 			}
 		}
-	}
-
-	@AssistedFactory
-	interface Factory {
-		fun create(savedStateHandle: SavedStateHandle): AFeatureViewModel
 	}
 }

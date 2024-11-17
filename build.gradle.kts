@@ -2,7 +2,7 @@ plugins{
     id ("com.android.application") version gradleConfVer apply false
     id ("com.android.library") version gradleConfVer apply false
     id ("org.jetbrains.kotlin.android") version kotlinVer apply false
-    id ("org.jetbrains.kotlin.kapt") version kotlinVer apply false
+    id ("com.google.devtools.ksp") version kspVer apply false
     id ("androidx.navigation.safeargs") version navigationVer apply false
 }
 
