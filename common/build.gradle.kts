@@ -3,7 +3,18 @@ plugins {
     kotlin("android")
     id ("com.google.devtools.ksp")
 }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "17" // Указываем JVM-таргет для Kotlin
+    }
+}
 android {
+    namespace = "com.example.common"
     compileSdk = compileSdkVersionConf
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer

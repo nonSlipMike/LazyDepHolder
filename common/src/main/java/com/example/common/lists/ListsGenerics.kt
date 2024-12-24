@@ -13,5 +13,5 @@ open class AlarmMessage : Message()
 class WarningAlarmMessage : AlarmMessage()
 
 inline fun <reified T> getMyObject(): T =
-	T::class.java.getConstructor(Int.javaClass).newInstance(1)
+	T::class.java.getConstructor(Int.Companion::class.java).newInstance(1)
 

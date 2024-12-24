@@ -30,7 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.database_api.entity.MainListItemEntity
 import com.example.b_feature_impl.R
+import com.example.c_feature_api.dto.C_FEATURE_PATCH
+import com.example.common.compose.pakObjectToGson
 
 
 @Composable
@@ -42,27 +45,22 @@ fun BFeatureMainComposeScreen(
 	Log.d("assadsa", "Recomposition from BFeatureMainComposeScreen ")
 
 	val state = viewModel.uiState.collectAsState()
-	ItemListScreen(state.value, viewModel::addNewItem)
+	ItemListScreen(state.value, viewModel::addNewItem, routeHandler)
 }
 
 @Composable
-fun ItemListScreen(state: ItemListState, addNewItem: () -> Unit) {
-	// Список элементов
+fun ItemListScreen(state: ItemListState, addNewItem: () -> Unit, routeHandler: (String) -> Unit) {
 	LazyColumn(
 		modifier = Modifier
 			.fillMaxSize()
 			.background(Color(0xFFFFE0B2))
 	) {
-		// Выводим каждый элемент списка
 		itemsIndexed(state.items) { index, item ->
 			ItemTile(item) {
-				// Переход на новый экран с передачей ID элемента
-				//val navController = rememberNavController()
-				//navController.navigate("itemDetail/${item.id}")
+				routeHandler("$C_FEATURE_PATCH/${item.pakObjectToGson()}")
 			}
 		}
 
-		// Кнопка для добавления нового элемента
 		item {
 			Divider(modifier = Modifier.padding(vertical = 8.dp))
 			AddItemButton {
@@ -79,7 +77,6 @@ fun AddItemButton(onClick: () -> Unit) {
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(16.dp),
-
 		shape = RoundedCornerShape(12.dp),
 		contentPadding = PaddingValues(vertical = 16.dp)
 	) {
@@ -88,8 +85,7 @@ fun AddItemButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemTile(item: Item, onClick: () -> Unit) {
-	// Табличка с данными для каждого элемента
+fun ItemTile(item: com.example.database_api.entity.MainListItemEntity, onClick: () -> Unit) {
 	Card(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -100,7 +96,6 @@ fun ItemTile(item: Item, onClick: () -> Unit) {
 		elevation = CardDefaults.cardElevation(5.dp),
 	) {
 		Row(
-
 			modifier = Modifier
 				.weight(1F)
 				.fillMaxSize()

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.common.compose.getObjectFromGson
 
 @Composable
 fun CFeatureMainComposeScreen(
@@ -30,7 +31,10 @@ fun CFeatureMainComposeScreen(
 ) {
 	Log.d("assadsa", "Recomposition from CFeatureMainComposeScreen ")
 
+	arguments?.let { viewModel.initMainItem(it.getObjectFromGson()) }
 	val state = viewModel.uiState.collectAsState()
+	val mainState = viewModel.uiMainState.collectAsState()
+
 	val addedDigit = remember { mutableStateOf("0") }
 
 	Column {

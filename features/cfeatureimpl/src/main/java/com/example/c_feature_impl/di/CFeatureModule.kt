@@ -47,7 +47,6 @@ object CFeatureModule {
 	fun provideViewModel(repository: Screen2Repository): CFeatureViewModel =
 		CFeatureViewModel(repository)
 
-
 	@Module
 	internal abstract class Declarations {
 		@FeatureModuleScope

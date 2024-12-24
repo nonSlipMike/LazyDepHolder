@@ -3,15 +3,17 @@ plugins {
 }
 
 gradlePlugin {
-	plugins.register("upload-plugin") {
-		id = "upload-plugin"
-		implementationClass = "com.example.myapp.UploadPlugin"
+	plugins {
+		register("upload-plugin") {
+			id = "upload-plugin"  // ID вашего плагина
+			implementationClass = "com.example.myapp.UploadPlugin" // Класс реализации плагина
+		}
 	}
 }
 
 dependencies {
-	implementation("com.android.tools.build:gradle:7.4.2")
-	implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
+	implementation("com.android.tools.build:gradle:$gradleConfVer")
+	implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVer")
 }
 
 
