@@ -1,10 +1,13 @@
 package com.example.b_feature_impl.displays.b_feature_main
 
 import androidx.lifecycle.ViewModel
+import com.example.database_api.dao.MainListDao
+import com.example.database_api.entity.MainListItemEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class BFeatureViewModel : ViewModel() {
+class BFeatureViewModel @Inject constructor(dao: MainListDao) : ViewModel() {
 
 	private val _uiState = MutableStateFlow(ItemListState())
 	val uiState: StateFlow<ItemListState> = _uiState
@@ -16,7 +19,7 @@ class BFeatureViewModel : ViewModel() {
 
 	// Метод для добавления нового элемента
 	fun addNewItem() {
-		val newItem = Item(
+		val newItem = MainListItemEntity(
 			id = _uiState.value.items.size + 1,
 			name = "Новый элемент",
 			value = (0..100).random().toDouble()
@@ -25,9 +28,9 @@ class BFeatureViewModel : ViewModel() {
 	}
 
 	// Генерация некоторых тестовых данных
-	private fun generateDummyItems(): List<Item> {
+	private fun generateDummyItems(): List<MainListItemEntity> {
 		return List(5) {
-			Item(
+			MainListItemEntity(
 				id = it,
 				name = "Элемент #${it + 1}",
 				value = (0..100).random().toDouble()
@@ -38,7 +41,7 @@ class BFeatureViewModel : ViewModel() {
 
 // Стейт для UI
 data class ItemListState(
-	val items: List<Item> = emptyList()
+	val items: List<MainListItemEntity> = emptyList()
 )
 
 // Модель элемента

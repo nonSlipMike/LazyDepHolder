@@ -5,7 +5,9 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.c_feature_impl.displays.c_feature_main.state.GameUiState
+import com.example.c_feature_impl.displays.c_feature_main.state.MainItemState
 import com.example.c_feature_impl.repositories.Screen2Repository
+import com.example.database_api.entity.MainListItemEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -37,10 +39,21 @@ import kotlin.concurrent.thread
 class CFeatureViewModel(
 	val repository: Screen2Repository
 ) : ViewModel() {
+
 	// Game UI state
 	private val _uiState = MutableStateFlow(GameUiState())
 	val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
+	private val _uiMainState = MutableStateFlow(MainItemState(null))
+	val uiMainState: StateFlow<MainItemState> = _uiMainState.asStateFlow()
+
+
+	fun initMainItem(item: MainListItemEntity){
+		_uiMainState.update {currentState ->
+			currentState.copy(
+				mainItem = item
+			)}
+	}
 	fun log(atr: String) {
 		Log.d("corutune", atr)
 

@@ -2,13 +2,13 @@ package com.example.b_feature_impl.di
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.b_feature_api.dto.B_FEATURE_PATCH
 import com.example.b_feature_api.dto.B_FEATURE_PATCH_MASK
 import com.example.b_feature_impl.displays.b_feature_main.BFeatureMainComposeScreen
 import com.example.b_feature_impl.displays.b_feature_main.BFeatureViewModel
 import com.example.common.ARGS_NAME
 import com.example.common.compose.ComposablePatchData
 import com.example.common.compose.provideViewModelWithDependency
+import com.example.database_api.dao.MainListDao
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
@@ -38,8 +38,8 @@ object BFeatureModule {
 	}
 
 	@Provides
-	fun provideViewModel(): BFeatureViewModel =
-		BFeatureViewModel()
+	fun provideViewModel(dao: MainListDao): BFeatureViewModel =
+		BFeatureViewModel(dao)
 
 
 //	@Module

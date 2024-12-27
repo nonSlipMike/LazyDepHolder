@@ -20,9 +20,9 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.file.ConfigurableFileTree
 
 //system
-const val gradleConfVer = "7.4.2"
-const val minSdkVersionConf = 21
-const val compileSdkVersionConf = 33
+const val gradleConfVer = "8.3.0"
+const val minSdkVersionConf = 26
+const val compileSdkVersionConf = 34
 const val appVersionCodeConf = 1
 const val appVersionNameConf = "1.0.0"
 const val appIdConf = "com.example.new.dagger_arch"
@@ -31,40 +31,43 @@ const val applicationIdSuffixConf = ".dev"
 const val versionNameSuffixConf = "-dev"
 
 //compose
-const val composeMaterial3Ver = "1.1.0"
-const val composeConstrLay = "1.0.1"
-const val composeLibVer = "1.4.3"
-const val composeActivityVer = "1.6.1"
-const val composeViewModelLifecycleVer = "2.5.1"
-const val composeLivecycleVer = "2.6.1"
-const val composeNavigationVer = "2.5.3"
-const val composeNavAnimationVer = "0.31.2-alpha"
+const val composeMaterial3Ver = "1.2.1" // Оставьте текущую версию
+const val composeConstrLay = "1.0.1" // Последняя стабильная
+const val composeLibVer = "1.6.0" // Стабильная версия для Kotlin 2.0.21
+const val composeActivityVer = "1.7.0" // Стабильная версия для Activity Compose
+const val composeViewModelLifecycleVer = "2.6.2" // Последняя стабильная версия Lifecycle
+const val composeLivecycleVer = "2.6.2"
+const val composeNavigationVer = "2.7.3" // Версия актуальна
+const val composeNavAnimationVer = "0.36.0" // Более стабильная бета
 
 
 //androidMaterialw
-const val materialVer = "1.4.0"
-const val constraintLayoutVer = "2.0.4"
+const val materialVer = "1.10.0"
+const val constraintLayoutVer = "2.1.3"
 const val materialDateTimePickerVer = "4.2.1"
 
 //navigation
-val navigationVer = "2.5.3"
+const val navigationVer = "2.5.3"
 
 //kotlin
-const val kotlinVer = "1.9.10"
-const val ktxVer = "1.3.2"
-const val kspVer = "1.9.0-1.0.12"
+const val kotlinVer = "2.0.21"
+const val ktxVer = "1.12.0"
+const val kspVer = "2.0.21-1.0.27"
 const val coroutinesVer = "1.4.2"
-const val kotlinCompilerExtensionVer = "1.5.3"
+const val kotlinCompilerExtensionVer = "1.5.15"
 
 //tests
 const val junitVer = "4.12"
-const val junitTestVer = "1.1.2"
-const val espressoVer = "3.3.0"
+const val junitTestVer = "1.1.5"
+const val espressoVer = "3.5.1"
 const val kaspressoVer = "1.2.0"
 
 //dagger
-const val daggerVer = "2.48"
+const val daggerVer = "2.50"
 const val jsr250Ver = "1.0"
+
+//room
+const val roomVer = "2.6.1"
 
 //JavaRx
 const val rxJavaVer = "2.2.19"
@@ -74,10 +77,10 @@ const val rxLintVer = "1.7.7"
 const val rxJava2ExtentionVer = "0.20.10"
 
 //lottie
-const val lottieVer = "3.1.0"
+const val lottieVer = "6.0.0"
 
 //network
-const val squareupOkhttpVer = "4.9.0"
+const val squareupOkhttpVer = "4.11.0"
 const val retrofitVer = "2.9.0"
 
 //picasso
@@ -94,8 +97,8 @@ const val lintVer = "26.5.1"
 const val websocketVer = "2.6"
 
 //androidX
-const val lifecycleVmVer = "2.3.1"
-const val lifecycleExtVer = "2.2.0"
+const val lifecycleVmVer = "2.6.2"
+const val lifecycleVer = "2.6.2"
 const val appcompat = "1.6.1"
 
 
@@ -111,10 +114,12 @@ val androidXLibs = mutableMapOf<String, Pair<Any, String>>().apply {
 		"lifecycleVmKtx",
 		Pair("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVmVer", "implementation")
 	)
-	put(
-		"lifecycleExt",
-		Pair("androidx.lifecycle:lifecycle-extensions:$lifecycleExtVer", "implementation")
-	)
+//	put(
+//		"lifecycleExt",
+//		Pair("androidx.lifecycle:lifecycle-extensions:$lifecycleExtVer", "implementation")
+//	)
+	put("lifecycleRuntime", Pair("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVer", "implementation"))
+	put("lifecycleViewModel", Pair("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVer", "implementation"))
 	put("fragmentsX", Pair("androidx.fragment:fragment-ktx:$fragmentsXVer", "implementation"))
 	put("legacy", Pair("androidx.legacy:legacy-support-v4:$legacyVer", "implementation"))
 	put(
@@ -153,7 +158,7 @@ val androidMaterial = mutableMapOf<String, Pair<Any, String>>().apply {
 	)
 	put(
 		"dateTimePicker",
-		Pair("com.wdullaer:materialdatetimepicker:$materialDateTimePickerVer", "implementation")
+		Pair("com.github.wdullaer:MaterialDateTimePicker:$materialDateTimePickerVer", "implementation")
 	)
 }
 
@@ -292,6 +297,12 @@ val javaRxLibs = mutableMapOf<String, Pair<Any, String>>().apply {
 
 }
 
+val roomLibs = mutableMapOf<String, Pair<Any, String>>().apply {
+	put("roomRuntime", Pair("androidx.room:room-runtime:$roomVer", "implementation"))
+	put("roomCompiler", Pair("androidx.room:room-compiler:$roomVer", "ksp"))
+	put("roomKtx", Pair("androidx.room:room-ktx:$roomVer", "implementation"))
+}
+
 val exoplayer = mutableMapOf<String, Pair<Any, String>>().apply {
 	put(
 		"exoPlayerCore",
@@ -355,8 +366,29 @@ fun Project.implMap(map: Map<String, Pair<Any, String>>) {
 	map.values.forEach { impl(it) }
 }
 
+/**
+ * чтобы этот подход работал можно использовать хук плагина org.jetbrains.kotlin.android
+ * который позволяет подключиться на ранних этапах сборки гредла
+ * (на ранних этапах нужно для того чтобы успевали инициализироваться процессоры анотаций)
+ * и плагин com.google.devtools.ksp должен стоять
+ * в начале каждого модуля перед org.jetbrains.kotlin.android)
+ * build.gradle.kts(someLibModule)
+ * plugins {
+ * 	id("com.google.devtools.ksp")
+ * 	id("com.android.library")
+ * 	id("org.jetbrains.kotlin.android")
+ * 	...
+ * }
+ * build.gradle.kts(:MyProject) root gradle file
+ * subprojects {
+ *     plugins.withId("org.jetbrains.kotlin.android") {
+ *         dependencies {
+ *             add("implementation", "androidx.compose.ui:ui:1.5.1")(for example)
+ *         }
+ *     }
+ * }
+ */
 fun Project.initLibDependencies() {
-
 	dependencies {
 		fileTreeFromConfig(mapOf("dir" to "libs", "include" to listOf("*.jar")))!!
 		implMap(androidXLibs)
@@ -366,7 +398,7 @@ fun Project.initLibDependencies() {
 		implMap(diLibs)
 		implMap(composeLibs)
 		implMap(retrofitAndOkHttpLibs)
-		implMap(navigationLibs)
 	}
 }
+
 

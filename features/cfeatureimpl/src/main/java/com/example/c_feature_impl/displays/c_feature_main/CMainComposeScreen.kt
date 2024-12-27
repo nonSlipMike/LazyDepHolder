@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.database_api.entity.MainListItemEntity
 
 @Composable
 fun CFeatureMainComposeScreen(
@@ -30,7 +31,15 @@ fun CFeatureMainComposeScreen(
 ) {
 	Log.d("assadsa", "Recomposition from CFeatureMainComposeScreen ")
 
+	arguments?.let {
+		viewModel.initMainItem(
+			MainListItemEntity(1,it,0.0)
+			//it.getObjectFromGson()
+		)
+	}
 	val state = viewModel.uiState.collectAsState()
+	val mainState = viewModel.uiMainState.collectAsState()
+
 	val addedDigit = remember { mutableStateOf("0") }
 
 	Column {
@@ -54,10 +63,7 @@ fun CFeatureMainComposeScreen(
 			modifier = Modifier.clickable { routeHandler("orders") })
 
 		ListOfDigits(state.value.items)
-
-
 	}
-
 }
 
 

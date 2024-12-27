@@ -1,13 +1,14 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id ("com.google.devtools.ksp")
+	id("com.google.devtools.ksp")
+	id("com.android.library")
+	id("org.jetbrains.kotlin.android")
 }
-android { compileSdk = compileSdkVersionConf }
+android {
+	namespace = "com.example.network_impl"
+}
 
-initLibDependencies()
 dependencies {
-    implementation(project(":core:networkapi"))
-    implementation(project(":common"))
+	implementation(project(":core:networkapi"))
+	implementation(project(":common"))
 }
 

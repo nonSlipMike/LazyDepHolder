@@ -40,13 +40,13 @@ abstract class FindUnusedClassesTask : DefaultTask() {
 }
 
 // Регистрация задачи
-tasks.register<FindUnusedClassesTask>("findUnusedClasses") {
-	group = "build"
-	description = "Find unused classes based on mapping.txt"
-
-	// Указываем путь к mapping.txt на этапе конфигурации
-	mappingFilePath = "${buildDir}/outputs/mapping/prodRelease/mapping.txt"
-}
+//tasks.register<FindUnusedClassesTask>("findUnusedClasses") {
+//	group = "build"
+//	description = "Find unused classes based on mapping.txt"
+//
+//	// Указываем путь к mapping.txt на этапе конфигурации
+//	mappingFilePath = "${buildDir}/outputs/mapping/prodRelease/mapping.txt"
+//}
 
 
 // ./gradlew :app:findUnusedClasses --configuration-cache

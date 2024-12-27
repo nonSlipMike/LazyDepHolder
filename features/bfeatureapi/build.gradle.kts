@@ -1,12 +1,16 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id ("com.google.devtools.ksp")
+	id("com.google.devtools.ksp")
+	id("com.android.library")
+	id("org.jetbrains.kotlin.android")
+	id("kotlin-parcelize")
 }
-android { compileSdk = compileSdkVersionConf }
+android {
+	namespace = "com.example.b_feature_api"
+}
 
-initLibDependencies()
+
 dependencies {
-    implementation(project(":common"))
+	implementation(project(":common"))
+	implMap(roomLibs)
 }
 

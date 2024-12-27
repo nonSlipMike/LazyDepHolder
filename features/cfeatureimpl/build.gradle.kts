@@ -1,16 +1,19 @@
 plugins {
+	id("com.google.devtools.ksp")
 	id("com.android.library")
-	kotlin("android")
-	id ("com.google.devtools.ksp")
+	id("org.jetbrains.kotlin.android")
+	id("kotlin-parcelize")
+	id("org.jetbrains.kotlin.plugin.compose")
 }
 android {
-	compileSdk = compileSdkVersionConf
-	buildFeatures.compose = true
-	composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
+	namespace = "com.example.c_feature_impl"
 }
 
-initLibDependencies()
+
 dependencies {
+	implMap(roomLibs)
 	implementation(project(":common"))
+	implementation(project(":core:databaseapi"))
+	implementation(project(":features:bfeatureapi"))
 	implementation(project(":features:cfeatureapi"))
 }

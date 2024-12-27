@@ -1,12 +1,10 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id ("com.google.devtools.ksp")
+	id("com.google.devtools.ksp")
+	id("com.android.library")
+	id("org.jetbrains.kotlin.android")
+	id("org.jetbrains.kotlin.plugin.compose")
 }
-android {
-    compileSdk = compileSdkVersionConf
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
+android{
+    namespace = "com.example.common"
 }
 
-initLibDependencies()

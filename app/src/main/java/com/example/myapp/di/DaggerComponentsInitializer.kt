@@ -8,6 +8,8 @@ import com.example.b_feature_impl.di.DaggerBFeatureComponent
 import com.example.c_feature_impl.di.CFeatureComponent
 import com.example.c_feature_impl.di.DaggerCFeatureComponent
 import com.example.common.di.getOneMap
+import com.example.database_impl.DaggerDatabaseComponent
+import com.example.database_impl.DatabaseComponent
 import com.example.network_impl.di.DaggerNetworkComponent
 import com.example.network_impl.di.NetworkComponent
 
@@ -20,14 +22,25 @@ object DaggerComponentsInitializer {
 				.insertAppContext(context)
 				.build()
 		}
+		DatabaseComponent.setInstance {
+			DaggerDatabaseComponent.builder()
+				.insertAppContext(context)
+				.build()
+		}
 
 		AFeatureComponent.setInstance {
 			DaggerAFeatureComponent.builder()
 				.insertNetworkClient(NetworkComponent.getInstance().provideRetrofitClient())
 				.build()
 		}
-		BFeatureComponent.setInstance { DaggerBFeatureComponent.builder().build() }
-		CFeatureComponent.setInstance { DaggerCFeatureComponent.builder().build() }
+		BFeatureComponent.setInstance {
+			DaggerBFeatureComponent.builder()
+				.insertMainListDao(DatabaseComponent.getInstance().provideMainListDao()).build()
+		}
+		CFeatureComponent.setInstance {
+			DaggerCFeatureComponent.builder()
+				.insertMainListDao(DatabaseComponent.getInstance().provideMainListDao()).build()
+		}
 
 
 		MainActivityComponent.setInstance {

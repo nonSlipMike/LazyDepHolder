@@ -1,20 +1,19 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id ("com.google.devtools.ksp")
-    id("androidx.navigation.safeargs.kotlin")
-    id ("kotlin-parcelize")
+	id("com.google.devtools.ksp")
+	id("com.android.library")
+	id("org.jetbrains.kotlin.android")
+	id("androidx.navigation.safeargs.kotlin")
+	id("kotlin-parcelize")
+	id("org.jetbrains.kotlin.plugin.compose")
 }
 android {
-    compileSdk = compileSdkVersionConf
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
+	namespace = "com.example.a_feature_impl"
 }
-initLibDependencies()
+
 
 dependencies {
-    implementation(project(":features:afeatureapi"))
-    implementation(project(":common"))
-    implementation(project(":core:networkapi"))
-    implementation(project(":features:cfeatureapi"))
+	implementation(project(":features:afeatureapi"))
+	implementation(project(":common"))
+	implementation(project(":core:networkapi"))
+	implementation(project(":features:cfeatureapi"))
 }

@@ -1,21 +1,27 @@
 plugins {
+	id("com.google.devtools.ksp")
 	id("com.android.application")
 	id("org.jetbrains.kotlin.android")
-	id ("com.google.devtools.ksp")
 	id("androidx.navigation.safeargs.kotlin")
 	id("upload-plugin")
+	id("org.jetbrains.kotlin.plugin.compose")
+}
+
+
+androidComponents {
+	beforeVariants { variantBuilder ->
+		// Отключаем ненужные варианты
+		if (variantBuilder.buildType == "debug" && variantBuilder.flavorName == "prod") {
+			variantBuilder.enable = false
+		}
+		if (variantBuilder.buildType == "release" && variantBuilder.flavorName == "dev") {
+			variantBuilder.enable = false
+		}
+	}
 }
 
 android {
-	tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-		kotlinOptions.jvmTarget = "1.8"
-	}//need to use viewModel
 	namespace = "com.example.myapp"
-	compileSdk = compileSdkVersionConf
-
-	buildFeatures.compose = true
-	composeOptions.kotlinCompilerExtensionVersion = kotlinCompilerExtensionVer
-
 	defaultConfig {
 		applicationId = appIdConf
 		minSdk = minSdkVersionConf
@@ -24,6 +30,8 @@ android {
 		versionName = appVersionNameConf
 		testInstrumentationRunner = testInstrumentRunnerConf
 	}
+
+	flavorDimensions.add("main")
 
 	buildTypes {
 		release {
@@ -39,25 +47,16 @@ android {
 			isShrinkResources = false
 		}
 	}
-	flavorDimensions.add("main")
+
 	productFlavors {
 		create("prod") {
 			buildConfigField("String", "BASE_SERVER", "\"https://mycorp.com\"")
-
 		}
 		create("dev") {
-			applicationIdSuffix = applicationIdSuffixConf//".dev"
-			versionNameSuffix = versionNameSuffixConf//"-dev"
+			applicationIdSuffix = applicationIdSuffixConf // ".dev"
+			versionNameSuffix = versionNameSuffixConf // "-dev"
 			buildConfigField("String", "BASE_SERVER", "\"https://dev.mycorp.com\"")
 		}
-	}
-	variantFilter {
-		this.ignore = name == "prodDebug" || name == "devRelease"
-	}
-
-	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
 	}
 	sourceSets {
 		getByName("main") {
@@ -66,28 +65,23 @@ android {
 			}
 		}
 	}
-	kotlinOptions {
-		jvmTarget = "1.8"
-	}
 }
 
-extra["androidSdkDirectory"] = android.sdkDirectory.absolutePath
-extra["compileSdkVersion"] = compileSdkVersionConf.toString()
-initLibDependencies()
 dependencies {
-
-	//core
-	implementation(project(":core:database"))
+	implMap(roomLibs)
 	implementation(project(":common"))
+	//core
 	implementation(project(":core:networkimpl"))
 	implementation(project(":core:networkapi"))
+	implementation(project(":core:databaseimpl"))
+	implementation(project(":core:databaseapi"))
+	//feature
 	implementation(project(":features:afeatureimpl"))
 	implementation(project(":features:bfeatureimpl"))
 	implementation(project(":features:cfeatureimpl"))
 	implementation(project(":features:afeatureapi"))
 	implementation(project(":features:bfeatureapi"))
 	implementation(project(":features:cfeatureapi"))
-	//feature
 }
-
-apply(from = "unusedClasses.gradle.kts")
+// подключили файл гредла со скриптом
+//apply(from = "unusedClasses.gradle.kts")

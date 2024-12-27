@@ -1,3 +1,5 @@
+import java.net.URI
+
 pluginManagement {
 	includeBuild("buildLogic")
 	repositories {
@@ -11,11 +13,13 @@ dependencyResolutionManagement {
 	repositories {
 		google()
 		mavenCentral()
+		maven { url = URI.create("https://jitpack.io") } // JitPack
 	}
 }
 
 rootProject.name = "MyApp"
 include(":app")
+include(":common")
 
 include(":features:afeatureimpl")
 include(":features:afeatureapi")
@@ -24,7 +28,7 @@ include(":features:bfeatureapi")
 include(":features:cfeatureimpl")
 include(":features:cfeatureapi")
 
-include(":common")
-include(":core:database")
+include(":core:databaseimpl")
+include(":core:databaseapi")
 include(":core:networkimpl")
 include(":core:networkapi")

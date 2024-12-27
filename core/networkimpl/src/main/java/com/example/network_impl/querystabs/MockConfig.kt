@@ -28,18 +28,18 @@ class MockConfig(
     /**
      * Мокает запрос по урле
      */
-    @MockerMarker
-    infix fun String.mock(block: MockCreator.() -> MockData) {
-        this@MockConfig.mock {
-            predicate { request ->
-                val originalUrl = getUrlWithoutParams(request.url.toString())
-                val originalScheme = request.url.scheme
-                val alternateUrl = alternateScheme(originalScheme) + originalUrl.substring(originalScheme.length until originalUrl.length)
-                originalUrl.equals(this@mock, true) || alternateUrl.equals(this@mock, true)
-            }
-            creator(block)
-        }
-    }
+//    @MockerMarker
+//    infix fun String.mock(block: MockCreator.() -> MockData) {
+//        this@MockConfig.mock {
+//            predicate { request ->
+//                val originalUrl = getUrlWithoutParams(request.url.toString())
+//                val originalScheme = request.url.scheme
+//                val alternateUrl = alternateScheme(originalScheme) + originalUrl.substring(originalScheme.length until originalUrl.length)
+//                originalUrl.equals(this@mock, true) || alternateUrl.equals(this@mock, true)
+//            }
+//            creator(block)
+//        }
+//    }
 
     private fun getUrlWithoutParams(url: String): String {
         return url.split("?")[0]

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -18,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.a_feature_api.network.A_FEATURE_PATCH_MASK
 import com.example.b_feature_api.dto.B_FEATURE_PATCH_MASK
-import com.example.c_feature_api.dto.C_FEATURE_PATCH
 import com.example.common.ARGS_NAME
 import com.example.common.compose.ComposablePatchData
 import com.example.common.compose.Router
@@ -30,9 +29,6 @@ import com.example.common.compose.registerInNavHost
 
 import com.example.common.config.APP_CHANNEL_NOTIFY
 import com.example.myapp.di.MainActivityComponent
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity(), Router {
@@ -48,10 +44,10 @@ class MainActivity : ComponentActivity(), Router {
 		setContent {
 			MaterialTheme {
 				Column(modifier = Modifier.fillMaxSize()) {
-					navController = rememberAnimatedNavController()
-					AnimatedNavHost(
+					navController = rememberNavController()
+					NavHost(
 						navController = navController,
-						startDestination = A_FEATURE_PATCH_MASK,
+						startDestination = B_FEATURE_PATCH_MASK,
 						modifier = Modifier.weight(1f)
 					) {
 						// инжект модулей с помошью Dagger @InToMap из Feature модуля

@@ -1,5 +1,6 @@
 package com.example.c_feature_impl.repositories
 
+import com.example.database_api.dao.MainListDao
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,7 +10,7 @@ interface Screen2Repository {
     fun startCounter(): Flow<String>
 }
 
-class Screen2RepositoryImpl @Inject constructor() : Screen2Repository {
+class Screen2RepositoryImpl @Inject constructor(dao: MainListDao) : Screen2Repository {
     private var counter = 1L
 
     override fun startCounter(): Flow<String> = flow {
