@@ -11,8 +11,6 @@ ksp {
 android {
 	namespace = "com.example.database_impl"
 }
-
-
 dependencies {
 	implMap(roomLibs)
 	implementation(project(":common"))
